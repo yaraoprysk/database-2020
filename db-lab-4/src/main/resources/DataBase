@@ -1,0 +1,338 @@
+CREATE DATABASE IF NOT EXISTS `oprysk_db`;
+USE `oprysk_db`;
+
+DROP TABLE IF EXISTS `oprysk_db`.`plane_info`;
+DROP TABLE IF EXISTS `oprysk_db`.`client_info`;
+DROP TABLE IF EXISTS `oprysk_db`.`route`;
+DROP TABLE IF EXISTS `oprysk_db`.`registration_info`;
+DROP TABLE IF EXISTS `oprysk_db`.`schedule`;
+DROP TABLE IF EXISTS `oprysk_db`.`flight`;
+DROP TABLE IF EXISTS `oprysk_db`.`payment_booking`;
+DROP TABLE IF EXISTS `oprysk_db`.`ticket`;
+DROP TABLE IF EXISTS `oprysk_db`.`travel_class`;
+DROP TABLE IF EXISTS `oprysk_db`.`booking`;
+DROP TABLE IF EXISTS `oprysk_db`.`airport`;
+DROP TABLE IF EXISTS `oprysk_db`.`airline`;
+DROP TABLE IF EXISTS `oprysk_db`.`client`;
+DROP TABLE IF EXISTS `oprysk_db`.`current_info_about_the_plane`;
+
+
+
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`current_info_about_the_plane`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`current_info_about_the_plane` (
+                                                                          `id` INT NOT NULL AUTO_INCREMENT,
+                                                                          `airline_id` INT NOT NULL,
+                                                                          `airport_id` INT NOT NULL,
+                                                                          `registration_info_id` INT NOT NULL,
+                                                                          `flight_id` INT NOT NULL,
+                                                                          `route_id` INT NOT NULL,
+                                                                          `schedule_id` INT NOT NULL,
+                                                                          `plane_info_id` INT NOT NULL,
+                                                                          PRIMARY KEY (`id`),
+                                                                          UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+                                                                          INDEX `fk_current_info_about_the_plane_airline1_idx` (`airline_id` ASC) VISIBLE,
+                                                                          INDEX `fk_current_info_about_the_plane_airport1_idx` (`airport_id` ASC) VISIBLE,
+                                                                          INDEX `fk_current_info_about_the_plane_registration_info1_idx` (`registration_info_id` ASC) VISIBLE,
+                                                                          INDEX `fk_current_info_about_the_plane_flight1_idx` (`flight_id` ASC) VISIBLE,
+                                                                          INDEX `fk_current_info_about_the_plane_route1_idx` (`route_id` ASC) VISIBLE,
+                                                                          INDEX `fk_current_info_about_the_plane_schedule1_idx` (`schedule_id` ASC) VISIBLE,
+                                                                          INDEX `fk_current_info_about_the_plane_plane_info1_idx` (`plane_info_id` ASC) VISIBLE,
+                                                                          CONSTRAINT `fk_current_info_about_the_plane_airline1`
+                                                                              FOREIGN KEY (`airline_id`)
+                                                                                  REFERENCES `oprysk_db`.`airline` (`id`)
+                                                                                  ON DELETE NO ACTION
+                                                                                  ON UPDATE NO ACTION,
+                                                                          CONSTRAINT `fk_current_info_about_the_plane_airport1`
+                                                                              FOREIGN KEY (`airport_id`)
+                                                                                  REFERENCES `oprysk_db`.`airport` (`id`)
+                                                                                  ON DELETE NO ACTION
+                                                                                  ON UPDATE NO ACTION,
+                                                                          CONSTRAINT `fk_current_info_about_the_plane_registration_info1`
+                                                                              FOREIGN KEY (`registration_info_id`)
+                                                                                  REFERENCES `oprysk_db`.`registration_info` (`id`)
+                                                                                  ON DELETE NO ACTION
+                                                                                  ON UPDATE NO ACTION,
+                                                                          CONSTRAINT `fk_current_info_about_the_plane_flight1`
+                                                                              FOREIGN KEY (`flight_id`)
+                                                                                  REFERENCES `oprysk_db`.`flight` (`id`)
+                                                                                  ON DELETE NO ACTION
+                                                                                  ON UPDATE NO ACTION,
+                                                                          CONSTRAINT `fk_current_info_about_the_plane_route1`
+                                                                              FOREIGN KEY (`route_id`)
+                                                                                  REFERENCES `oprysk_db`.`route` (`id`)
+                                                                                  ON DELETE NO ACTION
+                                                                                  ON UPDATE NO ACTION,
+                                                                          CONSTRAINT `fk_current_info_about_the_plane_schedule1`
+                                                                              FOREIGN KEY (`schedule_id`)
+                                                                                  REFERENCES `oprysk_db`.`schedule` (`id`)
+                                                                                  ON DELETE NO ACTION
+                                                                                  ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`client`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`client` (
+                                                    `id` INT NOT NULL AUTO_INCREMENT,
+                                                    `current_info_about_the_plane_id` INT NOT NULL,
+                                                    `booking_id` INT NOT NULL,
+                                                    `ticket_id` INT NOT NULL,
+                                                    `client_info_id` INT NOT NULL,
+                                                    PRIMARY KEY (`id`),
+                                                    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+                                                    INDEX `fk_client_current_info_about_the_plane_idx` (`current_info_about_the_plane_id` ASC) VISIBLE,
+                                                    INDEX `fk_client_booking1_idx` (`booking_id` ASC) VISIBLE,
+                                                    INDEX `fk_client_ticket1_idx` (`ticket_id` ASC) VISIBLE,
+                                                    INDEX `fk_client_client_info1_idx` (`client_info_id` ASC) VISIBLE,
+                                                    CONSTRAINT `fk_client_current_info_about_the_plane`
+                                                        FOREIGN KEY (`current_info_about_the_plane_id`)
+                                                            REFERENCES `oprysk_db`.`current_info_about_the_plane` (`id`)
+                                                            ON DELETE NO ACTION
+                                                            ON UPDATE NO ACTION,
+                                                    CONSTRAINT `fk_client_booking1`
+                                                        FOREIGN KEY (`booking_id`)
+                                                            REFERENCES `oprysk_db`.`booking` (`id`)
+                                                            ON DELETE NO ACTION
+                                                            ON UPDATE NO ACTION,
+                                                    CONSTRAINT `fk_client_ticket1`
+                                                        FOREIGN KEY (`ticket_id`)
+                                                            REFERENCES `oprysk_db`.`ticket` (`id`)
+                                                            ON DELETE NO ACTION
+                                                            ON UPDATE NO ACTION,
+                                                    CONSTRAINT `fk_client_client_info1`
+                                                        FOREIGN KEY (`client_info_id`)
+                                                            REFERENCES `oprysk_db`.`client_info` (`id`)
+                                                            ON DELETE NO ACTION
+                                                            ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`airline`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`airline` (
+                                                     `id` INT NOT NULL AUTO_INCREMENT,
+                                                     `name` VARCHAR(45) NOT NULL,
+                                                     `country` VARCHAR(45) NOT NULL,
+                                                     PRIMARY KEY (`id`),
+                                                     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`airport`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`airport` (
+                                                     `id` INT NOT NULL AUTO_INCREMENT,
+                                                     `name` VARCHAR(45) NOT NULL,
+                                                     `city` VARCHAR(45) NOT NULL,
+                                                     PRIMARY KEY (`id`),
+                                                     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`booking`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`booking` (
+                                                     `id` INT NOT NULL AUTO_INCREMENT,
+                                                     `airline_id` INT NOT NULL,
+                                                     `travel_class_id` INT NOT NULL,
+                                                     `ticket_id` INT NOT NULL,
+                                                     `plane_info_id` INT NOT NULL,
+                                                     PRIMARY KEY (`id`),
+                                                     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+                                                     INDEX `fk_booking_airline1_idx` (`airline_id` ASC) VISIBLE,
+                                                     INDEX `fk_booking_travel_class1_idx` (`travel_class_id` ASC) VISIBLE,
+                                                     INDEX `fk_booking_ticket1_idx` (`ticket_id` ASC) VISIBLE,
+                                                     INDEX `fk_booking_plane_info1_idx` (`plane_info_id` ASC) VISIBLE,
+                                                     CONSTRAINT `fk_booking_airline1`
+                                                         FOREIGN KEY (`airline_id`)
+                                                             REFERENCES `oprysk_db`.`airline` (`id`)
+                                                             ON DELETE NO ACTION
+                                                             ON UPDATE NO ACTION,
+                                                     CONSTRAINT `fk_booking_travel_class1`
+                                                         FOREIGN KEY (`travel_class_id`)
+                                                             REFERENCES `oprysk_db`.`travel_class` (`id`)
+                                                             ON DELETE NO ACTION
+                                                             ON UPDATE NO ACTION,
+                                                     CONSTRAINT `fk_booking_ticket1`
+                                                         FOREIGN KEY (`ticket_id`)
+                                                             REFERENCES `oprysk_db`.`ticket` (`id`)
+                                                             ON DELETE NO ACTION
+                                                             ON UPDATE NO ACTION,
+                                                     CONSTRAINT `fk_booking_plane_info1`
+                                                         FOREIGN KEY (`plane_info_id`)
+                                                             REFERENCES `oprysk_db`.`plane_info` (`id`)
+                                                             ON DELETE NO ACTION
+                                                             ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`travel_class`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`travel_class` (
+                                                          `id` INT NOT NULL AUTO_INCREMENT,
+                                                          `name` VARCHAR(45) NOT NULL,
+                                                          PRIMARY KEY (`id`),
+                                                          UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`ticket`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`ticket` (
+                                                    `id` INT NOT NULL AUTO_INCREMENT,
+                                                    `price` INT NOT NULL,
+                                                    `payment_booking_id` INT NOT NULL,
+                                                    PRIMARY KEY (`id`),
+                                                    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+                                                    INDEX `fk_ticket_payment_booking1_idx` (`payment_booking_id` ASC) VISIBLE,
+                                                    CONSTRAINT `fk_ticket_payment_booking1`
+                                                        FOREIGN KEY (`payment_booking_id`)
+                                                            REFERENCES `oprysk_db`.`payment_booking` (`id`)
+                                                            ON DELETE NO ACTION
+                                                            ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`payment_booking`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`payment_booking` (
+                                                             `id` INT NOT NULL AUTO_INCREMENT,
+                                                             `status` VARCHAR(45) NOT NULL,
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`flight`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`flight` (
+                                                    `id` INT NOT NULL AUTO_INCREMENT,
+                                                    `departure_point` VARCHAR(45) NOT NULL,
+                                                    `destination` VARCHAR(45) NOT NULL,
+                                                    PRIMARY KEY (`id`),
+                                                    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`schedule`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`schedule` (
+                                                      `id` INT NOT NULL AUTO_INCREMENT,
+                                                      `arrival_time` VARCHAR(45) NOT NULL,
+                                                      `departure_time` VARCHAR(45) NOT NULL,
+                                                      PRIMARY KEY (`id`),
+                                                      UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`route`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`route` (
+                                                   `id` INT NOT NULL AUTO_INCREMENT,
+                                                   `speed_km_per_hour` INT NOT NULL,
+                                                   `destination_in_km` VARCHAR(45) NOT NULL,
+                                                   PRIMARY KEY (`id`),
+                                                   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`registration_info`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`registration_info` (
+                                                               `id` INT NOT NULL AUTO_INCREMENT,
+                                                               `manufacture_year` INT NOT NULL,
+                                                               `general_plaque_hours` INT NOT NULL,
+                                                               `model` VARCHAR(45) NOT NULL,
+                                                               `board_number` VARCHAR(45) NOT NULL,
+                                                               PRIMARY KEY (`id`),
+                                                               UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`client_info`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`client_info` (
+                                                         `id` INT NOT NULL AUTO_INCREMENT,
+                                                         `first_name` VARCHAR(45) NOT NULL,
+                                                         `last_name` VARCHAR(45) NOT NULL,
+                                                         `middle_name` VARCHAR(45) NOT NULL,
+                                                         `phone` VARCHAR(45) NOT NULL,
+                                                         `email` VARCHAR(45) NULL DEFAULT NULL,
+                                                         `passport` VARCHAR(45) NOT NULL,
+                                                         PRIMARY KEY (`id`),
+                                                         UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `oprysk_db`.`plane_info`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oprysk_db`.`plane_info` (
+                                                        `id` INT NOT NULL AUTO_INCREMENT,
+                                                        `number_seats` INT NOT NULL,
+                                                        `status` VARCHAR(45) NOT NULL,
+                                                        PRIMARY KEY (`id`),
+                                                        UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+    ENGINE = InnoDB;
+
+CREATE INDEX first_name_idx ON `client_info` (first_name);
+CREATE INDEX last_name_idx ON `client_info` (last_name);
+
+INSERT INTO `oprysk_db`.`plane_info`(`number_seats`,`status`) VALUES
+('564','arrives'), ('256','delays'),
+('321','canceled'), ('477','leaves');
+
+INSERT INTO `oprysk_db`.`client_info`(`first_name`, `middle_name`, `last_name`, `phone`, `email`, `passport`)VALUES
+('Vasyl', 'Stepanovych', 'Vasylkiv', '+380962100652', 'vasya.vasya@gmail.com', 'BK-103698557'),
+('Anna', 'Ivanivna', 'Melnyk', '+380998220875', 'anna.ivan.m@ukr.net', 'BK-286348552'),
+('Maryan', 'Volodymyrovych', 'Stepanenko', '+380975863745', 'stepanko.mar@gmail.com', 'BK-963245670'),
+('Oksana', 'Nazarivna', 'Ivanenko', '+380632296639', 'oksanochka.iva@ukr.net', 'BK-520755639');
+
+INSERT INTO `oprysk_db`.`route`(`speed_km_per_hour`,`destination_in_km`) VALUES
+('450', '735'), ('481', '1054'), ('506', '963');
+
+INSERT INTO `oprysk_db`.`registration_info`(`manufacture_year`, `general_plaque_hours`, `model`, `board_number`) VALUES
+('1996', '765', '777-200ER', 'PW4090'),('2001', '961', '767-300ER', 'PW4000'),
+('2005', '603', '757-500ER', 'PW4120'),('2003', '487', '747-250ER', 'PW4060');
+
+INSERT INTO `oprysk_db`.`schedule`(`arrival_time`,`departure_time`) VALUES
+('16:45','20:36'), ('17:15','21:56'),
+('11:07','18:34'), ('02:47','06:23');
+
+INSERT INTO `oprysk_db`.`flight`(`departure_point`, `destination`) VALUES
+('Lviv','Istanbul'), ('Kyiv','Paris'),
+('London','Kharkiv'), ('Barcelona','Lviv');
+
+INSERT INTO `oprysk_db`.`payment_booking`(`status`) VALUES
+('paid'), ('not paid');
+
+INSERT INTO `oprysk_db`.`ticket`(`price`,`payment_booking_id`) VALUES
+('285', '1'), ('365', '2'), ('401', '3'), ('165','4');
+
+INSERT INTO `oprysk_db`.`travel_class`(`name`) VALUES
+('economy'), ('business'), ('first');
+
+INSERT INTO `oprysk_db`.`booking`(`airline_id`, `travel_class_id`, `ticket_id`,`plane_info_id`) VALUES
+('1','3','2','4'), ('2','1','1','3'), ('3','2','3','2'), ('4','4','4','1');
+
+INSERT INTO `oprysk_db`.`airport`(`name`, `city`) VALUES
+('Danylo Halytskyi International Airport', 'Lviv'), ('Boryspil', 'Kyiv'),
+('Charles de Gaulle', 'Paris'), ('Barcelona-El Prat Josep Tarradellas', 'Barcelona');
+
+INSERT INTO `oprysk_db`.`airline`(`name`, `country`) VALUES
+('Ukraine International Airlines (UIA)', 'Ukraine'), ('AirFrance', 'France'),
+('Iberia', 'Spain'), ('AirTanker', 'UK');
+
+INSERT INTO `oprysk_db`.`client`(`current_info_about_the_plane_id`, `booking_id`, `ticket_id`,`client_info_id`) VALUES
+('2', '3', '2','1'),
+('3', '4', '3','2'),
+('4', '1', '1','3'),
+('1', '2', '4','4');
+
+INSERT INTO `oprysk_db`.`current_info_about_the_plane`(`airline_id`, `airport_id`, `registration_info_id`, `flight_id`, `route_id`, `schedule_id`,`plane_info_id`) VALUES
+('1', '2', '3', '1', '4', '2', '1'),
+('2', '3', '2', '2', '2', '1', '2'),
+('3', '4', '4', '3', '1', '3', '3'),
+('4', '1', '1', '4', '3', '4', '4');
