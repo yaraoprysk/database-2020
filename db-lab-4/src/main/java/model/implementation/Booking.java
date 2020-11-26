@@ -2,22 +2,37 @@ package model.implementation;
 
 import model.IGeneralModel;
 
-public class Booking implements IGeneralModel {
-    private Integer id;
-    private Integer airlineId;
-    private Integer travelClassId;
-    private Integer ticketId;
-    private Integer planeInfoId;
+import javax.persistence.*;
+import java.util.Objects;
 
-    public Booking(Integer id, Integer airlineId, Integer travelClassId, Integer ticketId, Integer planeInfoId) {
-        this.id = id;
-        this.airlineId = airlineId;
-        this.travelClassId = travelClassId;
-        this.ticketId = ticketId;
-        this.planeInfoId = planeInfoId;
+@Entity
+@Table(name = "booking", schema = "oprysk_db")
+public class Booking implements IGeneralModel {
+    private static final String tableName = Booking.class.getSimpleName();
+    private Integer id;
+    private Airline airlineByAirlineId;
+    private TravelClass travelClassByTravelClassId;
+    private Ticket ticketByTicketId;
+    private PlaneInfo planeInfoByPlaneInfoId;
+
+    public Booking(){
     }
 
-    @Override
+    public Booking(Integer id, Airline airlineByAirlineId, TravelClass travelClassByTravelClassId,
+                   Ticket ticketByTicketId, PlaneInfo planeInfoByPlaneInfoId) {
+        this.id = id;
+        this.airlineByAirlineId = airlineByAirlineId;
+        this.travelClassByTravelClassId = travelClassByTravelClassId;
+        this.ticketByTicketId = ticketByTicketId;
+        this.planeInfoByPlaneInfoId = planeInfoByPlaneInfoId;
+    }
+
+    public static String getTableName() {
+        return tableName;
+    }
+
+    @Id
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -26,47 +41,69 @@ public class Booking implements IGeneralModel {
         this.id = id;
     }
 
-    public Integer getAirlineId() {
-        return airlineId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return Objects.equals(id, booking.id);
     }
 
-    public void setAirlineId(Integer airlineId) {
-        this.airlineId = airlineId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
-    public Integer getTravelClassId() {
-        return travelClassId;
+    @ManyToOne
+    @JoinColumn(name = "airline_id", referencedColumnName = "id", nullable = false)
+    public Airline getAirlineByAirlineId() {
+        return airlineByAirlineId;
     }
 
-    public void setTravelClassId(Integer travelClassId) {
-        this.travelClassId = travelClassId;
+    public void setAirlineByAirlineId(Airline airlineByAirlineId) {
+        this.airlineByAirlineId = airlineByAirlineId;
     }
 
-    public Integer getTicketId() {
-        return ticketId;
+    @ManyToOne
+    @JoinColumn(name = "travel_class_id", referencedColumnName = "id", nullable = false)
+    public TravelClass getTravelClassByTravelClassId() {
+        return travelClassByTravelClassId;
     }
 
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
+    public void setTravelClassByTravelClassId(TravelClass travelClassByTravelClassId) {
+        this.travelClassByTravelClassId = travelClassByTravelClassId;
     }
 
-    public Integer getPlaneInfoId() {
-        return planeInfoId;
+    @ManyToOne
+    @JoinColumn(name = "ticket_id", referencedColumnName = "id", nullable = false)
+    public Ticket getTicketByTicketId() {
+        return ticketByTicketId;
     }
 
-    public void setPlaneInfoId(Integer planeInfoId) {
-        this.planeInfoId = planeInfoId;
+    public void setTicketByTicketId(Ticket ticketByTicketId) {
+        this.ticketByTicketId = ticketByTicketId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "plane_info_id", referencedColumnName = "id", nullable = false)
+    public PlaneInfo getPlaneInfoByPlaneInfoId() {
+        return planeInfoByPlaneInfoId;
+    }
+
+    public void setPlaneInfoByPlaneInfoId(PlaneInfo planeInfoByPlaneInfoId) {
+        this.planeInfoByPlaneInfoId = planeInfoByPlaneInfoId;
     }
 
     @Override
     public String toString() {
         return "Booking{" +
                 "id=" + id +
-                ", airlineId=" + airlineId +
-                ", travelClassId=" + travelClassId +
-                ", ticketId=" + ticketId +
-                ", planeInfoId=" + planeInfoId +
+                ", airlineByAirlineId=" + airlineByAirlineId +
+                ", travelClassByTravelClassId=" + travelClassByTravelClassId +
+                ", ticketByTicketId=" + ticketByTicketId +
+                ", planeInfoByPlaneInfoId=" + planeInfoByPlaneInfoId +
                 '}';
     }
 }
+
 

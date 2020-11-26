@@ -2,13 +2,14 @@ package service.implementation;
 
 import DAO.IGeneralDAO;
 import DAO.implementation.BookingDAO;
+import DAO.implementation.GeneralDAO;
 import model.implementation.Booking;
 
 public class BookingService extends GeneralService<Booking> {
-    private final IGeneralDAO<Booking, Integer> bookingDAOImplementation = new BookingDAO();
+    private final GeneralDAO<Booking> BOOKING_DAO = new BookingDAO();
 
     @Override
-    public final IGeneralDAO<Booking, Integer> getDAO() {
-        return bookingDAOImplementation;
+    public IGeneralDAO<Booking> getDAO() {
+        return BOOKING_DAO;
     }
 }

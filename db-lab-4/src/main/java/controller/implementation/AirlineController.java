@@ -1,14 +1,15 @@
 package controller.implementation;
 
 import model.implementation.Airline;
+import service.IGeneralService;
 import service.implementation.AirlineService;
 import service.implementation.GeneralService;
 
 public class AirlineController extends GeneralController<Airline> {
-    private static final AirlineService AIRLINE_SERVICE = new AirlineService();
+    private final GeneralService<Airline> airlineService = new AirlineService();
 
     @Override
-    public final GeneralService<Airline> getService() {
-        return AIRLINE_SERVICE;
+    public final IGeneralService<Airline> getService() {
+        return airlineService;
     }
 }

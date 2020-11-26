@@ -2,29 +2,43 @@ package model.implementation;
 
 import model.IGeneralModel;
 
-public class CurrentInfoAboutThePlane implements IGeneralModel {
-    private Integer id;
-    private Integer airlineId;
-    private Integer airportId;
-    private Integer registrationInfoId;
-    private Integer flightId;
-    private Integer routeId;
-    private Integer scheduleId;
-    private Integer planeInfoId;
+import javax.persistence.*;
+import java.util.Objects;
 
-    public CurrentInfoAboutThePlane(Integer id, Integer airlineId, Integer airportId, Integer registrationInfoId,
-                                    Integer flightId, Integer routeId, Integer scheduleId, Integer planeInfoId) {
-        this.id = id;
-        this.airlineId = airlineId;
-        this.airportId = airportId;
-        this.registrationInfoId = registrationInfoId;
-        this.flightId = flightId;
-        this.routeId = routeId;
-        this.scheduleId = scheduleId;
-        this.planeInfoId = planeInfoId;
+@Entity
+@Table(name = "current_info_about_the_plane", schema = "oprysk_db")
+public class CurrentInfoAboutThePlane implements IGeneralModel {
+    private static final String tableName = CurrentInfoAboutThePlane.class.getSimpleName();
+    private Integer id;
+    private Airline airlineByAirlineId;
+    private Airport airportByAirportId;
+    private RegistrationInfo registrationInfoByRegistrationInfoId;
+    private Flight flightByFlightId;
+    private Route routeByRouteId;
+    private PlaneInfo planeInfoByPlaneInfoId;
+
+    public CurrentInfoAboutThePlane() {
     }
 
-    @Override
+    public CurrentInfoAboutThePlane(Integer id, Airline airlineByAirlineId, Airport airportByAirportId,
+                                    RegistrationInfo registrationInfoByRegistrationInfoId,
+                                    Flight flightByFlightId, Route routeByRouteId,
+                                    PlaneInfo planeInfoByPlaneInfoId) {
+        this.id = id;
+        this.airlineByAirlineId = airlineByAirlineId;
+        this.airportByAirportId = airportByAirportId;
+        this.registrationInfoByRegistrationInfoId = registrationInfoByRegistrationInfoId;
+        this.flightByFlightId = flightByFlightId;
+        this.routeByRouteId = routeByRouteId;
+        this.planeInfoByPlaneInfoId = planeInfoByPlaneInfoId;
+    }
+
+    public static String getTableName() {
+        return tableName;
+    }
+
+    @Id
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -33,73 +47,90 @@ public class CurrentInfoAboutThePlane implements IGeneralModel {
         this.id = id;
     }
 
-    public Integer getAirlineId() {
-        return airlineId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CurrentInfoAboutThePlane currentInfoAboutThePlane = (CurrentInfoAboutThePlane) o;
+        return Objects.equals(id, currentInfoAboutThePlane.id);
     }
 
-    public void setAirlineId(Integer airlineId) {
-        this.airlineId = airlineId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
-    public Integer getAirportId() {
-        return airportId;
+    @ManyToOne
+    @JoinColumn(name = "airline_id", referencedColumnName = "id", nullable = false)
+    public Airline getAirlineByAirlineId() {
+        return airlineByAirlineId;
     }
 
-    public void setAirportId(Integer airportId) {
-        this.airportId = airportId;
+    public void setAirlineByAirlineId(Airline airlineByAirlineId) {
+        this.airlineByAirlineId = airlineByAirlineId;
     }
 
-    public Integer getRegistrationInfoId() {
-        return registrationInfoId;
+    @ManyToOne
+    @JoinColumn(name = "airport_id", referencedColumnName = "id", nullable = false)
+    public Airport getAirportByAirportId() {
+        return airportByAirportId;
     }
 
-    public void setRegistrationInfoId(Integer registrationInfoId) {
-        this.registrationInfoId = registrationInfoId;
+    public void setAirportByAirportId(Airport airportByAirportId) {
+        this.airportByAirportId = airportByAirportId;
     }
 
-    public Integer getFlightId() {
-        return flightId;
+    @ManyToOne
+    @JoinColumn(name = "registration_info_id", referencedColumnName = "id", nullable = false)
+    public RegistrationInfo getRegistrationInfoByRegistrationInfoId() {
+        return registrationInfoByRegistrationInfoId;
     }
 
-    public void setFlightId(Integer flightId) {
-        this.flightId = flightId;
+    public void setRegistrationInfoByRegistrationInfoId(RegistrationInfo registrationInfoByRegistrationInfoId) {
+        this.registrationInfoByRegistrationInfoId = registrationInfoByRegistrationInfoId;
     }
 
-    public Integer getRouteId() {
-        return routeId;
+    @ManyToOne
+    @JoinColumn(name = "flight_id", referencedColumnName = "id", nullable = false)
+    public Flight getFlightByFlightId() {
+        return flightByFlightId;
     }
 
-    public void setRouteId(Integer routeId) {
-        this.routeId = routeId;
+    public void setFlightByFlightId(Flight flightByFlightId) {
+        this.flightByFlightId = flightByFlightId;
     }
 
-    public Integer getScheduleId() {
-        return scheduleId;
+    @ManyToOne
+    @JoinColumn(name = "route_id", referencedColumnName = "id", nullable = false)
+    public Route getRouteByRouteId() {
+        return routeByRouteId;
     }
 
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setRouteByRouteId(Route routeByRouteId) {
+        this.routeByRouteId = routeByRouteId;
     }
 
-    public Integer getPlaneInfoId() {
-        return planeInfoId;
+
+    @ManyToOne
+    @JoinColumn(name = "plane_info_id", referencedColumnName = "id", nullable = false)
+    public PlaneInfo getPlaneInfoByPlaneInfoId() {
+        return planeInfoByPlaneInfoId;
     }
 
-    public void setPlaneInfoId(Integer planeInfoId) {
-        this.planeInfoId = planeInfoId;
+    public void setPlaneInfoByPlaneInfoId(PlaneInfo planeInfoByPlaneInfoId) {
+        this.planeInfoByPlaneInfoId = planeInfoByPlaneInfoId;
     }
 
     @Override
     public String toString() {
         return "CurrentInfoAboutThePlane{" +
                 "id=" + id +
-                ", airlineId=" + airlineId +
-                ", airportId=" + airportId +
-                ", registrationInfoId=" + registrationInfoId +
-                ", flightId=" + flightId +
-                ", routeId=" + routeId +
-                ", scheduleId=" + scheduleId +
-                ", planeInfoId=" + planeInfoId +
+                ", airlineByAirlineId=" + airlineByAirlineId +
+                ", airportByAirportId=" + airportByAirportId +
+                ", registrationInfoByRegistrationInfoId=" + registrationInfoByRegistrationInfoId +
+                ", flightByFlightId=" + flightByFlightId +
+                ", routeByRouteId=" + routeByRouteId +
+                ", planeInfoByPlaneInfoId=" + planeInfoByPlaneInfoId +
                 '}';
     }
 }

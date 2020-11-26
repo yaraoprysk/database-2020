@@ -1,14 +1,15 @@
 package service.implementation;
 
 import DAO.IGeneralDAO;
+import DAO.implementation.GeneralDAO;
 import DAO.implementation.TravelClassDAO;
 import model.implementation.TravelClass;
 
 public class TravelClassService extends GeneralService<TravelClass> {
-    private final IGeneralDAO<TravelClass, Integer> travelClassDAOImplementation = new TravelClassDAO();
+    private final GeneralDAO<TravelClass> TRAVEL_CLASS_DAO = new TravelClassDAO();
 
     @Override
-    public final IGeneralDAO<TravelClass, Integer> getDAO() {
-        return travelClassDAOImplementation;
+    public IGeneralDAO<TravelClass> getDAO() {
+        return TRAVEL_CLASS_DAO;
     }
 }
