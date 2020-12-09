@@ -2,13 +2,14 @@ package service.implementation;
 
 import DAO.IGeneralDAO;
 import DAO.implementation.ClientDAO;
+import DAO.implementation.GeneralDAO;
 import model.implementation.Client;
 
 public class ClientService extends GeneralService<Client> {
-    private final IGeneralDAO<Client, Integer> clientDAOImplementation = new ClientDAO();
+    private final GeneralDAO<Client> CLIENT_DAO = new ClientDAO();
 
     @Override
-    public final IGeneralDAO<Client, Integer> getDAO() {
-        return clientDAOImplementation;
+    public IGeneralDAO<Client> getDAO() {
+        return CLIENT_DAO;
     }
 }

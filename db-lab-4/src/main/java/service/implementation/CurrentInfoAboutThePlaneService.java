@@ -2,13 +2,14 @@ package service.implementation;
 
 import DAO.IGeneralDAO;
 import DAO.implementation.CurrentInfoAboutThePlaneDAO;
+import DAO.implementation.GeneralDAO;
 import model.implementation.CurrentInfoAboutThePlane;
 
 public class CurrentInfoAboutThePlaneService extends GeneralService<CurrentInfoAboutThePlane> {
-    private final IGeneralDAO<CurrentInfoAboutThePlane, Integer> currentInfoAboutThePlaneDAOImplementation = new CurrentInfoAboutThePlaneDAO();
+    private final GeneralDAO<CurrentInfoAboutThePlane> CURRENT_INFO_ABOUT_THE_PLANE_DAO = new CurrentInfoAboutThePlaneDAO();
 
     @Override
-    public final IGeneralDAO<CurrentInfoAboutThePlane, Integer> getDAO() {
-        return currentInfoAboutThePlaneDAOImplementation;
+    public IGeneralDAO<CurrentInfoAboutThePlane> getDAO() {
+        return CURRENT_INFO_ABOUT_THE_PLANE_DAO;
     }
 }

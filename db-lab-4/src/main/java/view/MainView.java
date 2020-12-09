@@ -2,6 +2,7 @@ package view;
 
 import controller.implementation.*;
 import model.implementation.*;
+import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class MainView {
+    private static final Scanner INPUT = new Scanner(System.in);
     private final AirlineController airlineController = new AirlineController();
     private final AirportController airportController = new AirportController();
     private final BookingController bookingController = new BookingController();
@@ -27,9 +29,8 @@ public class MainView {
 
     private final Map<String, String> menu;
     private final Map<String, Printable> methodsMenu;
-    private static final Scanner INPUT = new Scanner(System.in);
 
-    public MainView() {
+    public MainView(Session session) throws SQLException {
         menu = new LinkedHashMap<>();
         methodsMenu = new LinkedHashMap<>();
 
@@ -117,127 +118,127 @@ public class MainView {
         menu.put("144", "144 - Delete travel class by ID");
         menu.put("145", "145 - Update travel class by ID");
 
+        methodsMenu.put("11", ()-> getAllAirlines(session));
+        methodsMenu.put("12", () -> getAirlineById(session));
+        methodsMenu.put("13", () -> createAirline(session));
+        methodsMenu.put("14", () -> deleteAirlineById(session));
+        methodsMenu.put("15", () -> updateAirlineById(session));
 
-        methodsMenu.put("11", this::getAllAirlines);
-        methodsMenu.put("12", this::getAirlineById);
-        methodsMenu.put("13", this::createAirline);
-        methodsMenu.put("14", this::deleteAirlineById);
-        methodsMenu.put("15", this::updateAirlineById);
+        methodsMenu.put("21", () -> getAllAirports(session));
+        methodsMenu.put("22", () -> getAirportById(session));
+        methodsMenu.put("23", () -> createAirport(session));
+        methodsMenu.put("24", () -> deleteAirportById(session));
+        methodsMenu.put("25", () -> updateAirportById(session));
 
-        methodsMenu.put("21", this::getAllAirports);
-        methodsMenu.put("22", this::getAirportById);
-        methodsMenu.put("23", this::createAirport);
-        methodsMenu.put("24", this::deleteAirportById);
-        methodsMenu.put("25", this::updateAirportById);
+        methodsMenu.put("31", () -> getAllBookings(session));
+        methodsMenu.put("32", () -> getBookingById(session));
+        methodsMenu.put("33", () -> createBooking(session));
+        methodsMenu.put("34", () -> deleteBookingById(session));
+        methodsMenu.put("35", () -> updateBookingById(session));
 
-        methodsMenu.put("31", this::getAllBookings);
-        methodsMenu.put("32", this::getBookingById);
-        methodsMenu.put("33", this::createBooking);
-        methodsMenu.put("34", this::deleteBookingById);
-        methodsMenu.put("35", this::updateBookingById);
+        methodsMenu.put("41", () -> getAllClients(session));
+        methodsMenu.put("42", () -> getClientById(session));
+        methodsMenu.put("43", () -> createClient(session));
+        methodsMenu.put("44", () -> deleteClientById(session));
+        methodsMenu.put("45", () -> updateClientById(session));
 
-        methodsMenu.put("41", this::getAllClients);
-        methodsMenu.put("42", this::getClientById);
-        methodsMenu.put("43", this::createClient);
-        methodsMenu.put("44", this::deleteClientById);
-        methodsMenu.put("45", this::updateClientById);
+        methodsMenu.put("51", () -> getAllInfoAboutThePlanes(session));
+        methodsMenu.put("52", () -> getInfoAboutThePlaneById(session));
+        methodsMenu.put("53", () -> createInfoAboutThePlane(session));
+        methodsMenu.put("54", () -> deleteInfoAboutThePlaneById(session));
+        methodsMenu.put("55", () -> updateInfoAboutThePlaneById(session));
 
-        methodsMenu.put("51", this::getAllInfoAboutThePlanes);
-        methodsMenu.put("52", this::getInfoAboutThePlaneById);
-        methodsMenu.put("53", this::createInfoAboutThePlane);
-        methodsMenu.put("54", this::deleteInfoAboutThePlaneById);
-        methodsMenu.put("55", this::updateInfoAboutThePlaneById);
+        methodsMenu.put("61", () -> getAllFlights(session));
+        methodsMenu.put("62", () -> getFlightById(session));
+        methodsMenu.put("63", () -> createFlight(session));
+        methodsMenu.put("64", () -> deleteFlightById(session));
+        methodsMenu.put("65", () -> updateAirlineById(session));
 
-        methodsMenu.put("61", this::getAllFlights);
-        methodsMenu.put("62", this::getFlightById);
-        methodsMenu.put("63", this::createFlight);
-        methodsMenu.put("64", this::deleteFlightById);
-        methodsMenu.put("65", this::updateFlightById);
+        methodsMenu.put("71", () -> getAllInfoClients(session));
+        methodsMenu.put("72", () -> getInfoClientById(session));
+        methodsMenu.put("73", () -> createInfoClient(session));
+        methodsMenu.put("74", () -> deleteInfoClientById(session));
+        methodsMenu.put("75", () -> updateInfoClientById(session));
 
-        methodsMenu.put("71", this::getAllInfoClients);
-        methodsMenu.put("72", this::getInfoClientById);
-        methodsMenu.put("73", this::createInfoClient);
-        methodsMenu.put("74", this::deleteInfoClientById);
-        methodsMenu.put("75", this::updateInfoClientById);
+        methodsMenu.put("81", () -> getAllPaymentBookings(session));
+        methodsMenu.put("82", () -> getPaymentBookingById(session));
+        methodsMenu.put("83", () -> createPaymentBooking(session));
+        methodsMenu.put("84", () -> deletePaymentBookingById(session));
+        methodsMenu.put("85", () -> updatePaymentBookingById(session));
 
-        methodsMenu.put("81", this::getAllPaymentBookings);
-        methodsMenu.put("82", this::getPaymentBookingById);
-        methodsMenu.put("83", this::createPaymentBooking);
-        methodsMenu.put("84", this::deletePaymentBookingById);
-        methodsMenu.put("85", this::updatePaymentBookingById);
+        methodsMenu.put("91", () -> getAllPlaneInfos(session));
+        methodsMenu.put("92", () -> getPlaneInfoById(session));
+        methodsMenu.put("93", () -> createPlaneInfo(session));
+        methodsMenu.put("94", () -> deletePlaneInfoById(session));
+        methodsMenu.put("95", () -> updatePlaneInfoById(session));
 
-        methodsMenu.put("91", this::getAllPlaneInfos);
-        methodsMenu.put("92", this::getPlaneInfoById);
-        methodsMenu.put("93", this::createPlaneInfo);
-        methodsMenu.put("94", this::deletePlaneInfoById);
-        methodsMenu.put("95", this::updatePlaneInfoById);
+        methodsMenu.put("101", () -> getAllRegistrationInfos(session));
+        methodsMenu.put("102", () -> getRegistrationInfoById(session));
+        methodsMenu.put("103", () -> createRegistrationInfo(session));
+        methodsMenu.put("104", () -> deleteRegistrationInfoById(session));
+        methodsMenu.put("105", () -> updateRegistrationInfoById(session));
 
-        methodsMenu.put("101", this::getAllRegistrationInfos);
-        methodsMenu.put("102", this::getRegistrationInfoById);
-        methodsMenu.put("103", this::createRegistrationInfo);
-        methodsMenu.put("104", this::deleteRegistrationInfoById);
-        methodsMenu.put("105", this::updateRegistrationInfoById);
+        methodsMenu.put("111", () -> getAllRoutes(session));
+        methodsMenu.put("112", () -> getRouteById(session));
+        methodsMenu.put("113", () -> createRoute(session));
+        methodsMenu.put("114", () -> deleteRouteById(session));
+        methodsMenu.put("115", () -> updateRegistrationInfoById(session));
 
-        methodsMenu.put("111", this::getAllRoutes);
-        methodsMenu.put("112", this::getRouteById);
-        methodsMenu.put("113", this::createRoute);
-        methodsMenu.put("114", this::deleteRouteById);
-        methodsMenu.put("115", this::updateRouteById);
+        methodsMenu.put("121", () -> getAllSchedules(session));
+        methodsMenu.put("122", () -> getScheduleById(session));
+        methodsMenu.put("123", () -> createSchedule(session));
+        methodsMenu.put("124", () -> deleteScheduleById(session));
+        methodsMenu.put("125", () -> updateScheduleById(session));
 
-        methodsMenu.put("121", this::getAllSchedules);
-        methodsMenu.put("122", this::getScheduleById);
-        methodsMenu.put("123", this::createSchedule);
-        methodsMenu.put("124", this::deleteScheduleById);
-        methodsMenu.put("125", this::updateScheduleById);
+        methodsMenu.put("131", () -> getAllTickets(session));
+        methodsMenu.put("132", () -> getTicketById(session));
+        methodsMenu.put("133", () -> createTicket(session));
+        methodsMenu.put("134", () -> deleteTicketById(session));
+        methodsMenu.put("135", () -> updateTicketById(session));
 
-        methodsMenu.put("131", this::getAllTickets);
-        methodsMenu.put("132", this::getTicketById);
-        methodsMenu.put("133", this::createTicket);
-        methodsMenu.put("134", this::deleteTicketById);
-        methodsMenu.put("135", this::updateTicketById);
+        methodsMenu.put("141", () -> getAllTravelClasses(session));
+        methodsMenu.put("142", () -> getTravelClassById(session));
+        methodsMenu.put("143", () -> createTravelClass(session));
+        methodsMenu.put("144", () -> deleteTravelClassById(session));
+        methodsMenu.put("145", () -> updateTravelClassById(session));
 
-        methodsMenu.put("141", this::getAllTravelClasses);
-        methodsMenu.put("142", this::getTravelClassById);
-        methodsMenu.put("143", this::createTravelClass);
-        methodsMenu.put("144", this::deleteTravelClassById);
-        methodsMenu.put("145", this::updateTravelClassById);
     }
 
 
-    private void getAllAirlines() throws SQLException {
+    private void getAllAirlines(Session session) throws SQLException {
         System.out.println("\nTable: airline");
-        airlineController.getAll();
+        airlineController.getAll(session);
     }
 
-    private void getAirlineById() throws SQLException {
+    private void getAirlineById(Session session) throws SQLException {
         System.out.println("Enter ID for Airline: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        airlineController.getById(id);
+        airlineController.getById(id, session);
     }
 
-    private void createAirline() throws SQLException {
+    private void createAirline(Session session) throws SQLException {
         System.out.println("Enter new airline name: ");
         String name = INPUT.nextLine();
         System.out.println("Enter new airline country: ");
         String country = INPUT.nextLine();
         INPUT.nextLine();
         Airline entity = new Airline(0, name, country);
-        airlineController.create(entity);
+        airlineController.create(entity, session);
     }
 
-    private void deleteAirlineById() throws SQLException {
+    private void deleteAirlineById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Airline: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        airlineController.delete(id);
+        airlineController.delete(id, session);
     }
 
-    private void updateAirlineById() throws SQLException {
+    private void updateAirlineById(Session session) throws SQLException {
         System.out.println("Enter airline id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        Airline oldAirline = airlineController.getService().getById(id);
+        Airline oldAirline = airlineController.getService().getById(id, session);
         System.out.println("Enter new name for airline: ");
         String name = INPUT.nextLine();
         System.out.println("Enter new country for airline: ");
@@ -250,45 +251,45 @@ public class MainView {
         if (name.equals("")) newName = oldAirline.getName();
         if (country.equals("")) newCountry = oldAirline.getCountry();
 
-        Airline entity = new Airline(id, newName, newCountry);
-        airlineController.update(entity);
+        Airline entity = new Airline(id, newName, newCountry );
+        airlineController.update(entity, session);
     }
 
 
-    private void getAllAirports() throws SQLException {
+    private void getAllAirports(Session session) throws SQLException {
         System.out.println("\nTable: airport");
-        airportController.getAll();
+        airportController.getAll(session);
     }
 
-    private void getAirportById() throws SQLException {
+    private void getAirportById(Session session) throws SQLException {
         System.out.println("Enter ID for Airport: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        airportController.getById(id);
+        airportController.getById(id, session);
     }
 
-    private void createAirport() throws SQLException {
+    private void createAirport(Session session) throws SQLException {
         System.out.println("Enter new airport city: ");
         String city = INPUT.nextLine();
         System.out.println("Enter new airport name: ");
         String name = INPUT.nextLine();
         INPUT.nextLine();
         Airport entity = new Airport(0, city, name);
-        airportController.create(entity);
+        airportController.create(entity, session);
     }
 
-    private void deleteAirportById() throws SQLException {
+    private void deleteAirportById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Airport: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        airportController.delete(id);
+        airportController.delete(id, session);
     }
 
-    private void updateAirportById() throws SQLException {
+    private void updateAirportById(Session session) throws SQLException {
         System.out.println("Enter airport id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        Airport oldAirport = airportController.getService().getById(id);
+        Airport oldAirport = airportController.getService().getById(id, session);
         System.out.println("Enter new city for airport: ");
         String city = INPUT.nextLine();
         System.out.println("Enter new name for airport: ");
@@ -302,23 +303,23 @@ public class MainView {
         if (name.equals("")) newName = oldAirport.getName();
 
         Airport entity = new Airport(id, newCity, newName);
-        airportController.update(entity);
+        airportController.update(entity, session);
     }
 
 
-    private void getAllBookings() throws SQLException {
+    private void getAllBookings(Session session) throws SQLException {
         System.out.println("\nTable: booking");
-        registrationInfoController.getAll();
+        registrationInfoController.getAll(session);
     }
 
-    private void getBookingById() throws SQLException {
+    private void getBookingById(Session session) throws SQLException {
         System.out.println("Enter ID for Booking: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        registrationInfoController.getById(id);
+        registrationInfoController.getById(id, session);
     }
 
-    private void createBooking() throws SQLException {
+    private void createBooking(Session session) throws SQLException {
         System.out.println("Enter new airline ID: ");
         Integer airlineId = INPUT.nextInt();
         System.out.println("Enter new travel class ID: ");
@@ -328,22 +329,26 @@ public class MainView {
         System.out.println("Enter new plane Info ID: ");
         Integer planeInfoId = INPUT.nextInt();
         INPUT.nextLine();
-        Booking entity = new Booking(0, airlineId, travelClassId, ticketId, planeInfoId);
-        bookingController.create(entity);
+        Airline airline = airlineController.getService().getById(airlineId, session);
+        TravelClass travelClass = travelClassController.getService().getById(travelClassId, session);
+        Ticket ticket = ticketController.getService().getById(ticketId, session);
+        PlaneInfo planeInfo = planeInfoController.getService().getById(planeInfoId, session);
+        Booking entity = new Booking(0, airline, travelClass, ticket, planeInfo);
+        bookingController.create(entity, session);
     }
 
-    private void deleteBookingById() throws SQLException {
+    private void deleteBookingById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Booking: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        registrationInfoController.delete(id);
+        registrationInfoController.delete(id, session);
     }
 
-    private void updateBookingById() throws SQLException {
+    private void updateBookingById(Session session) throws SQLException {
         System.out.println("Enter booking ID to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        Booking oldBooking = bookingController.getService().getById(id);
+        Booking oldBooking = bookingController.getService().getById(id, session);
         System.out.println("Enter new airline ID: ");
         int airlineId = INPUT.nextInt();
         System.out.println("Enter new travel class ID: ");
@@ -354,34 +359,30 @@ public class MainView {
         int planeInfoId = INPUT.nextInt();
         INPUT.nextLine();
 
-        Integer newAirlineId = airlineId;
-        Integer newTravelClassId = travelClassId;
-        Integer newTicketId = ticketId;
-        Integer newPlaneInfoId = planeInfoId;
 
-        if (airlineId < 0) newAirlineId = oldBooking.getAirlineId();
-        if (travelClassId < 0) newTravelClassId = oldBooking.getTravelClassId();
-        if (ticketId < 0) newTicketId = oldBooking.getTicketId();
-        if (planeInfoId < 0) newPlaneInfoId = oldBooking.getPlaneInfoId();
+        Airline newAirline = airlineController.getService().getById(airlineId, session);
+        TravelClass newTravelClass = travelClassController.getService().getById(travelClassId, session);
+        Ticket newTicket = ticketController.getService().getById(ticketId, session);
+        PlaneInfo newPlaneInfo = planeInfoController.getService().getById(planeInfoId, session);
 
-        Booking entity = new Booking(id, newAirlineId, newTravelClassId, newTicketId, newPlaneInfoId);
-        bookingController.update(entity);
+        Booking entity = new Booking(id, newAirline, newTravelClass, newTicket, newPlaneInfo);
+        bookingController.update(entity, session);
     }
 
 
-    private void getAllClients() throws SQLException {
+    private void getAllClients(Session session) throws SQLException {
         System.out.println("\nTable: client");
-        clientController.getAll();
+        clientController.getAll(session);
     }
 
-    private void getClientById() throws SQLException {
+    private void getClientById(Session session) throws SQLException {
         System.out.println("Enter ID for Client: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        clientController.getById(id);
+        clientController.getById(id, session);
     }
 
-    private void createClient() throws SQLException {
+    private void createClient(Session session) throws SQLException {
         System.out.println("Enter new info about the plane ID: ");
         Integer currentInfoAboutThePlaneId = INPUT.nextInt();
         System.out.println("Enter new booking ID: ");
@@ -391,22 +392,28 @@ public class MainView {
         System.out.println("Enter new client info ID: ");
         Integer infoClientId = INPUT.nextInt();
         INPUT.nextLine();
-        Client entity = new Client(0, currentInfoAboutThePlaneId, bookingId, ticketId, infoClientId);
-        clientController.create(entity);
+        CurrentInfoAboutThePlane currentInfoAboutThePlane =
+                currentInfoAboutThePlaneController.getService().getById(currentInfoAboutThePlaneId, session);
+        Booking booking = bookingController.getService().getById(bookingId, session);
+        Ticket ticket = ticketController.getService().getById(ticketId, session);
+        InfoClient infoClient = infoClientController.getService().getById(infoClientId, session);
+
+        Client entity = new Client(0, currentInfoAboutThePlane, booking, ticket, infoClient);
+        clientController.create(entity, session);
     }
 
-    private void deleteClientById() throws SQLException {
+    private void deleteClientById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Client: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        clientController.delete(id);
+        clientController.delete(id,session);
     }
 
-    private void updateClientById() throws SQLException {
+    private void updateClientById(Session session) throws SQLException {
         System.out.println("Enter client ID to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        Client oldClient = clientController.getService().getById(id);
+        Client oldClient = clientController.getService().getById(id, session);
         System.out.println("Enter new info about the plane ID: ");
         int currentInfoAboutThePlaneId = INPUT.nextInt();
         System.out.println("Enter new booking ID: ");
@@ -417,35 +424,30 @@ public class MainView {
         int infoClientId = INPUT.nextInt();
         INPUT.nextLine();
 
-        Integer newCurrentInfoAboutThePlaneId = currentInfoAboutThePlaneId;
-        Integer newBookingId = bookingId;
-        Integer newTicketId = ticketId;
-        Integer newInfoClientId = infoClientId;
-
-        if (currentInfoAboutThePlaneId < 0) newCurrentInfoAboutThePlaneId = oldClient.getCurrentInfoAboutThePlaneId();
-        if (bookingId < 0) newBookingId = oldClient.getBookingId();
-        if (ticketId < 0) newTicketId = oldClient.getTicketId();
-        if (infoClientId < 0) newInfoClientId = oldClient.getInfoClientId();
-
-        Client entity = new Client(id, newCurrentInfoAboutThePlaneId, newBookingId, newTicketId, newInfoClientId);
-        clientController.update(entity);
+        CurrentInfoAboutThePlane newCurrentInfoAboutThePlane =
+                currentInfoAboutThePlaneController.getService().getById(currentInfoAboutThePlaneId, session);
+        Booking newBooking = bookingController.getService().getById(bookingId, session);
+        Ticket newTicket = ticketController.getService().getById(ticketId, session);
+        InfoClient newInfoClient = infoClientController.getService().getById(infoClientId, session);
+        Client entity = new Client(id, newCurrentInfoAboutThePlane, newBooking, newTicket, newInfoClient);
+        clientController.update(entity, session);
     }
 
 
 
-    private void getAllInfoAboutThePlanes() throws SQLException {
+    private void getAllInfoAboutThePlanes(Session session) throws SQLException {
         System.out.println("\nTable: current_info_about_the_plane");
-        currentInfoAboutThePlaneController.getAll();
+        currentInfoAboutThePlaneController.getAll(session);
     }
 
-    private void getInfoAboutThePlaneById() throws SQLException {
+    private void getInfoAboutThePlaneById(Session session) throws SQLException {
         System.out.println("Enter ID for current info about the plane: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        currentInfoAboutThePlaneController.getById(id);
+        currentInfoAboutThePlaneController.getById(id, session);
     }
 
-    private void createInfoAboutThePlane() throws SQLException {
+    private void createInfoAboutThePlane(Session session) throws SQLException {
         System.out.println("Enter new airline ID: ");
         Integer airlineId = INPUT.nextInt();
         System.out.println("Enter new airport ID: ");
@@ -461,22 +463,29 @@ public class MainView {
         System.out.println("Enter new plane info ID: ");
         Integer planeInfoId = INPUT.nextInt();
         INPUT.nextLine();
-        CurrentInfoAboutThePlane entity = new CurrentInfoAboutThePlane(0, airlineId, airportId, registrationInfoId, flightId, routeId, scheduleId, planeInfoId);
-        currentInfoAboutThePlaneController.create(entity);
+        Airline airline = airlineController.getService().getById(airlineId, session);
+        Airport airport = airportController.getService().getById(airportId, session);
+        RegistrationInfo registrationInfo = registrationInfoController.getService().getById(registrationInfoId, session);
+        Flight flight = flightController.getService().getById(flightId, session);
+        Route route = routeController.getService().getById(routeId, session);
+        PlaneInfo planeInfo = planeInfoController.getService().getById(planeInfoId, session);
+        CurrentInfoAboutThePlane entity = new CurrentInfoAboutThePlane(0, airline, airport, registrationInfo,
+                flight, route, planeInfo);
+        currentInfoAboutThePlaneController.create(entity, session);
     }
 
-    private void deleteInfoAboutThePlaneById() throws SQLException {
+    private void deleteInfoAboutThePlaneById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Current Info About The Plane: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        currentInfoAboutThePlaneController.delete(id);
+        currentInfoAboutThePlaneController.delete(id, session);
     }
 
-    private void updateInfoAboutThePlaneById() throws SQLException {
+    private void updateInfoAboutThePlaneById(Session session) throws SQLException {
         System.out.println("Enter current info about the plane ID to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        CurrentInfoAboutThePlane oldInfoAboutThePlane = currentInfoAboutThePlaneController.getService().getById(id);
+        CurrentInfoAboutThePlane oldInfoAboutThePlane = currentInfoAboutThePlaneController.getService().getById(id, session);
         System.out.println("Enter new airline ID: ");
         int airlineId = INPUT.nextInt();
         System.out.println("Enter new airport ID: ");
@@ -493,64 +502,55 @@ public class MainView {
         int planeInfoId = INPUT.nextInt();
         INPUT.nextLine();
 
-        Integer newAirlineId = airlineId;
-        Integer newAirportId = airportId;
-        Integer newRegistrationInfoId = registrationInfoId;
-        Integer newFlightId = flightId;
-        Integer newRouteId = routeId;
-        Integer newScheduleId = scheduleId;
-        Integer newPlaneInfoId = planeInfoId;
+        Airline newAirline = airlineController.getService().getById(airlineId, session);
+        Airport newAirport = airportController.getService().getById(airportId, session);
+        RegistrationInfo newRegistrationInfo = registrationInfoController.getService().getById(registrationInfoId, session);
+        Flight newFlight = flightController.getService().getById(flightId, session);
+        Route newRoute = routeController.getService().getById(routeId, session);
+        PlaneInfo newPlaneInfo = planeInfoController.getService().getById(planeInfoId, session);
 
-        if (airlineId < 0) newAirlineId = oldInfoAboutThePlane.getAirlineId();
-        if (airportId < 0) newAirportId = oldInfoAboutThePlane.getAirportId();
-        if (registrationInfoId < 0) newRegistrationInfoId = oldInfoAboutThePlane.getRegistrationInfoId();
-        if (flightId < 0) newFlightId = oldInfoAboutThePlane.getFlightId();
-        if (routeId < 0) newRouteId = oldInfoAboutThePlane.getRouteId();
-        if (scheduleId < 0) newScheduleId = oldInfoAboutThePlane.getScheduleId();
-        if (planeInfoId < 0) newPlaneInfoId = oldInfoAboutThePlane.getPlaneInfoId();
-
-        CurrentInfoAboutThePlane entity = new CurrentInfoAboutThePlane(id, newAirlineId, newAirportId,
-                newRegistrationInfoId, newFlightId, newRouteId, newScheduleId, newPlaneInfoId);
-        currentInfoAboutThePlaneController.update(entity);
+        CurrentInfoAboutThePlane entity = new CurrentInfoAboutThePlane(id, newAirline, newAirport,
+                newRegistrationInfo, newFlight, newRoute, newPlaneInfo);
+        currentInfoAboutThePlaneController.update(entity, session);
     }
 
 
 
 
-    private void getAllFlights() throws SQLException {
+    private void getAllFlights(Session session) throws SQLException {
         System.out.println("\nTable: flight");
-        flightController.getAll();
+        flightController.getAll(session);
     }
 
-    private void getFlightById() throws SQLException {
+    private void getFlightById(Session session) throws SQLException {
         System.out.println("Enter ID for Flight: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        flightController.getById(id);
+        flightController.getById(id, session);
     }
 
-    private void createFlight() throws SQLException {
+    private void createFlight(Session session) throws SQLException {
         System.out.println("Enter new departure point: ");
         String departurePoint = INPUT.nextLine();
         System.out.println("Enter new destination: ");
         String destination = INPUT.nextLine();
         INPUT.nextLine();
         Flight entity = new Flight(0, departurePoint, destination);
-        flightController.create(entity);
+        flightController.create(entity,session);
     }
 
-    private void deleteFlightById() throws SQLException {
+    private void deleteFlightById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Flight: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        flightController.delete(id);
+        flightController.delete(id, session);
     }
 
-    private void updateFlightById() throws SQLException {
+    private void updateFlightById(Session session) throws SQLException {
         System.out.println("Enter flight id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-       Flight oldFlight = flightController.getService().getById(id);
+        Flight oldFlight = flightController.getService().getById(id,session);
         System.out.println("Enter new departure point: ");
         String departurePoint = INPUT.nextLine();
         System.out.println("Enter new destination: ");
@@ -564,24 +564,24 @@ public class MainView {
         if (destination.equals("")) newDestination = oldFlight.getDestination();
 
         Flight entity = new Flight(id, newDeparturePoint, newDestination);
-        flightController.update(entity);
+        flightController.update(entity, session);
     }
 
 
 
-    private void getAllInfoClients() throws SQLException {
+    private void getAllInfoClients(Session session) throws SQLException {
         System.out.println("\nTable: client_info");
-        infoClientController.getAll();
+        infoClientController.getAll(session);
     }
 
-    private void getInfoClientById() throws SQLException {
+    private void getInfoClientById(Session session) throws SQLException {
         System.out.println("Enter ID for Client Info: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        infoClientController.getById(id);
+        infoClientController.getById(id,session);
     }
 
-    private void createInfoClient() throws SQLException {
+    private void createInfoClient(Session session) throws SQLException {
         System.out.println("Enter new first name: ");
         String firstName = INPUT.nextLine();
         System.out.println("Enter new middle name: ");
@@ -596,21 +596,21 @@ public class MainView {
         String passport = INPUT.nextLine();
         INPUT.nextLine();
         InfoClient entity = new InfoClient(0, firstName, middleName, lastName, phone , email, passport);
-        infoClientController.create(entity);
+        infoClientController.create(entity, session);
     }
 
-    private void deleteInfoClientById() throws SQLException {
+    private void deleteInfoClientById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Client Info: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        infoClientController.delete(id);
+        infoClientController.delete(id, session);
     }
 
-    private void updateInfoClientById() throws SQLException {
+    private void updateInfoClientById(Session session) throws SQLException {
         System.out.println("Enter Client Info ID to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        InfoClient oldInfoClient = infoClientController.getService().getById(id);
+        InfoClient oldInfoClient = infoClientController.getService().getById(id, session);
         System.out.println("Enter new first name: ");
         String firstName = INPUT.nextLine();
         System.out.println("Enter new middle name: ");
@@ -641,44 +641,44 @@ public class MainView {
         if (passport.equals("")) newPassport = oldInfoClient.getPassport();
 
         InfoClient entity = new InfoClient(id, newFirstName, newMiddleName, newLastName,
-                                           newPhone, newEmail, newPassport);
-        infoClientController.update(entity);
+                newPhone, newEmail, newPassport);
+        infoClientController.update(entity, session);
     }
 
 
 
-    private void getAllPaymentBookings() throws SQLException {
+    private void getAllPaymentBookings(Session session) throws SQLException {
         System.out.println("\nTable: payment_booking");
-        paymentBookingController.getAll();
+        paymentBookingController.getAll(session);
     }
 
-    private void getPaymentBookingById() throws SQLException {
+    private void getPaymentBookingById(Session session) throws SQLException {
         System.out.println("Enter ID for Payment Booking: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        paymentBookingController.getById(id);
+        paymentBookingController.getById(id, session);
     }
 
-    private void createPaymentBooking() throws SQLException {
+    private void createPaymentBooking(Session session) throws SQLException {
         System.out.println("Enter new status: ");
         String status = INPUT.nextLine();
         INPUT.nextLine();
         PaymentBooking entity = new PaymentBooking(0, status);
-        paymentBookingController.create(entity);
+        paymentBookingController.create(entity, session);
     }
 
-    private void deletePaymentBookingById() throws SQLException {
+    private void deletePaymentBookingById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Payment Booking: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        paymentBookingController.delete(id);
+        paymentBookingController.delete(id, session);
     }
 
-    private void updatePaymentBookingById() throws SQLException {
+    private void updatePaymentBookingById(Session session) throws SQLException {
         System.out.println("Enter Payment Booking id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        PaymentBooking oldPaymentBooking = paymentBookingController.getService().getById(id);
+        PaymentBooking oldPaymentBooking = paymentBookingController.getService().getById(id, session);
         System.out.println("Enter new status for payment booking: ");
         String status = INPUT.nextLine();
         INPUT.nextLine();
@@ -688,45 +688,45 @@ public class MainView {
         if (status.equals("")) newStatus = oldPaymentBooking.getStatus();
 
         PaymentBooking entity = new PaymentBooking(id, newStatus);
-        paymentBookingController.update(entity);
+        paymentBookingController.update(entity, session);
     }
 
 
 
-    private void getAllPlaneInfos() throws SQLException {
+    private void getAllPlaneInfos(Session session) throws SQLException {
         System.out.println("\nTable: plane_info");
-        planeInfoController.getAll();
+        planeInfoController.getAll(session);
     }
 
-    private void getPlaneInfoById() throws SQLException {
+    private void getPlaneInfoById(Session session) throws SQLException {
         System.out.println("Enter ID for Plane Info: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        planeInfoController.getById(id);
+        planeInfoController.getById(id, session);
     }
 
-    private void createPlaneInfo() throws SQLException {
+    private void createPlaneInfo(Session session) throws SQLException {
         System.out.println("Enter new number seats: ");
         Integer number_seats = INPUT.nextInt();
         System.out.println("Enter new status: ");
         String status = INPUT.nextLine();
         INPUT.nextLine();
         PlaneInfo entity = new PlaneInfo(0, number_seats, status);
-        planeInfoController.create(entity);
+        planeInfoController.create(entity, session);
     }
 
-    private void deletePlaneInfoById() throws SQLException {
+    private void deletePlaneInfoById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Plane Info: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        planeInfoController.delete(id);
+        planeInfoController.delete(id, session);
     }
 
-    private void updatePlaneInfoById() throws SQLException {
+    private void updatePlaneInfoById(Session session) throws SQLException {
         System.out.println("Enter Plane Info id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        PlaneInfo oldPlaneInfo = planeInfoController.getService().getById(id);
+        PlaneInfo oldPlaneInfo = planeInfoController.getService().getById(id,session);
         System.out.println("Enter new number seats: ");
         int number_seats = INPUT.nextInt();
         System.out.println("Enter new status for payment booking: ");
@@ -740,24 +740,24 @@ public class MainView {
         if (status.equals("")) newStatus = oldPlaneInfo.getStatus();
 
         PlaneInfo entity = new PlaneInfo(id, newNumberSeats,newStatus);
-        planeInfoController.update(entity);
+        planeInfoController.update(entity, session);
     }
 
 
 
-    private void getAllRegistrationInfos() throws SQLException {
-        System.out.println("\nTable: booking");
-        registrationInfoController.getAll();
+    private void getAllRegistrationInfos(Session session) throws SQLException {
+        System.out.println("\nTable: registration_info");
+        registrationInfoController.getAll(session);
     }
 
-    private void getRegistrationInfoById() throws SQLException {
+    private void getRegistrationInfoById(Session session) throws SQLException {
         System.out.println("Enter ID for Registration Info: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        registrationInfoController.getById(id);
+        registrationInfoController.getById(id, session);
     }
 
-    private void createRegistrationInfo() throws SQLException {
+    private void createRegistrationInfo(Session session) throws SQLException {
         System.out.println("Enter new manufacture year: ");
         Integer manufactureYear = INPUT.nextInt();
         System.out.println("Enter new general plaque in hours: ");
@@ -768,21 +768,21 @@ public class MainView {
         String boardNumber = INPUT.nextLine();
         INPUT.nextLine();
         RegistrationInfo entity = new RegistrationInfo(0, manufactureYear, generalPlaqueHours, model, boardNumber);
-        registrationInfoController.create(entity);
+        registrationInfoController.create(entity, session);
     }
 
-    private void deleteRegistrationInfoById() throws SQLException {
+    private void deleteRegistrationInfoById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Registration Info: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        registrationInfoController.delete(id);
+        registrationInfoController.delete(id, session);
     }
 
-    private void updateRegistrationInfoById() throws SQLException {
+    private void updateRegistrationInfoById(Session session) throws SQLException {
         System.out.println("Enter Registration Info ID to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        RegistrationInfo oldRegistrationInfo = registrationInfoController.getService().getById(id);
+        RegistrationInfo oldRegistrationInfo = registrationInfoController.getService().getById(id,session);
         System.out.println("Enter new manufacture year: ");
         int manufactureYear = INPUT.nextInt();
         System.out.println("Enter new general plaque in hours: ");
@@ -804,45 +804,45 @@ public class MainView {
         if (boardNumber.equals("")) newBoardNumber = oldRegistrationInfo.getBoardNumber();
 
         RegistrationInfo entity = new RegistrationInfo(id, newManufactureYear, newGeneralPlaqueHours, newModel, newBoardNumber);
-        registrationInfoController.update(entity);
+        registrationInfoController.update(entity, session);
     }
 
 
 
-    private void getAllRoutes() throws SQLException {
+    private void getAllRoutes(Session session) throws SQLException {
         System.out.println("\nTable: route");
-        routeController.getAll();
+        routeController.getAll(session);
     }
 
-    private void getRouteById() throws SQLException {
+    private void getRouteById(Session session) throws SQLException {
         System.out.println("Enter ID for Route: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        routeController.getById(id);
+        routeController.getById(id, session);
     }
 
-    private void createRoute() throws SQLException {
+    private void createRoute(Session session) throws SQLException {
         System.out.println("Enter new speed: ");
         Integer speedKmPerHours = INPUT.nextInt();
         System.out.println("Enter new destination: ");
         Integer destinationInKm = INPUT.nextInt();
         INPUT.nextLine();
         Route entity = new Route(0, speedKmPerHours, destinationInKm);
-        routeController.create(entity);
+        routeController.create(entity, session);
     }
 
-    private void deleteRouteById() throws SQLException {
+    private void deleteRouteById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Route: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        routeController.delete(id);
+        routeController.delete(id, session);
     }
 
-    private void updateRouteById() throws SQLException {
+    private void updateRouteById(Session session) throws SQLException {
         System.out.println("Enter Route ID to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        Route oldRoute = routeController.getService().getById(id);
+        Route oldRoute = routeController.getService().getById(id, session);
         System.out.println("Enter new speed: ");
         int speedKmPerHours = INPUT.nextInt();
         System.out.println("Enter new destination: ");
@@ -856,45 +856,45 @@ public class MainView {
         if (destinationInKm < 0) newDestinationInKm = oldRoute.getDestinationInKm();
 
         Route entity = new Route(id, newSpeedKmPerHours, newDestinationInKm);
-        routeController.update(entity);
+        routeController.update(entity, session);
     }
 
 
 
-    private void getAllSchedules() throws SQLException {
+    private void getAllSchedules(Session session) throws SQLException {
         System.out.println("\nTable: schedule");
-        scheduleController.getAll();
+        scheduleController.getAll(session);
     }
 
-    private void getScheduleById() throws SQLException {
+    private void getScheduleById(Session session) throws SQLException {
         System.out.println("Enter ID for Schedule: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        scheduleController.getById(id);
+        scheduleController.getById(id, session);
     }
 
-    private void createSchedule() throws SQLException {
+    private void createSchedule(Session session) throws SQLException {
         System.out.println("Enter new arrival time: ");
         String arrivalTime = INPUT.nextLine();
         System.out.println("Enter new departure time: ");
         String departureTime = INPUT.nextLine();
         INPUT.nextLine();
         Schedule entity = new Schedule(0, arrivalTime, departureTime);
-        scheduleController.create(entity);
+        scheduleController.create(entity, session);
     }
 
-    private void deleteScheduleById() throws SQLException {
+    private void deleteScheduleById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Schedule: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        scheduleController.delete(id);
+        scheduleController.delete(id, session);
     }
 
-    private void updateScheduleById() throws SQLException {
+    private void updateScheduleById(Session session) throws SQLException {
         System.out.println("Enter Schedule id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        Schedule oldSchedule = scheduleController.getService().getById(id);
+        Schedule oldSchedule = scheduleController.getService().getById(id, session);
         System.out.println("Enter new arrival time: ");
         String arrivalTime = INPUT.nextLine();
         System.out.println("Enter new departure time: ");
@@ -908,46 +908,47 @@ public class MainView {
         if (departureTime.equals("")) newDepartureTime = oldSchedule.getDepartureTime();
 
         Schedule entity = new Schedule(id, newArrivalTime, newDepartureTime);
-        scheduleController.update(entity);
+        scheduleController.update(entity, session);
     }
 
 
 
 
-    private void getAllTickets() throws SQLException {
+    private void getAllTickets(Session session) throws SQLException {
         System.out.println("\nTable: ticket");
-        ticketController.getAll();
+        ticketController.getAll(session);
     }
 
-    private void getTicketById() throws SQLException {
+    private void getTicketById(Session session) throws SQLException {
         System.out.println("Enter ID for Ticket: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        ticketController.getById(id);
+        ticketController.getById(id, session);
     }
 
-    private void createTicket() throws SQLException {
+    private void createTicket(Session session) throws SQLException {
         System.out.println("Enter new price: ");
         Integer price = INPUT.nextInt();
         System.out.println("Enter new payment booking ID: ");
         Integer paymentBookingId = INPUT.nextInt();
         INPUT.nextLine();
-        Ticket entity = new Ticket(0, price, paymentBookingId);
-        ticketController.create(entity);
+        PaymentBooking paymentBooking = paymentBookingController.getService().getById(paymentBookingId, session);
+        Ticket entity = new Ticket(0, price, paymentBooking);
+        ticketController.create(entity,session);
     }
 
-    private void deleteTicketById() throws SQLException {
+    private void deleteTicketById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Ticket: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        ticketController.delete(id);
+        ticketController.delete(id, session);
     }
 
-    private void updateTicketById() throws SQLException {
+    private void updateTicketById(Session session) throws SQLException {
         System.out.println("Enter Ticket ID to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        Ticket oldTicket = ticketController.getService().getById(id);
+        Ticket oldTicket = ticketController.getService().getById(id, session);
         System.out.println("Enter new price: ");
         int price = INPUT.nextInt();
         System.out.println("Enter new payment booking ID: ");
@@ -955,50 +956,50 @@ public class MainView {
         INPUT.nextLine();
 
         Integer newPrice = price;
-        Integer newPaymentBookingId = paymentBookingId;
+
 
         if (price < 0) newPrice = oldTicket.getPrice();
-        if (paymentBookingId < 0) newPaymentBookingId = oldTicket.getPaymentBookingId();
+        PaymentBooking newPaymentBooking = paymentBookingController.getService().getById(paymentBookingId, session);
 
-        Ticket entity = new Ticket(id, newPrice, newPaymentBookingId);
-        ticketController.update(entity);
+        Ticket entity = new Ticket(id, newPrice, newPaymentBooking);
+        ticketController.update(entity, session);
     }
 
 
 
 
-    private void getAllTravelClasses() throws SQLException {
+    private void getAllTravelClasses(Session session) throws SQLException {
         System.out.println("\nTable: travel_class");
-        travelClassController.getAll();
+        travelClassController.getAll(session);
     }
 
-    private void getTravelClassById() throws SQLException {
+    private void getTravelClassById(Session session) throws SQLException {
         System.out.println("Enter ID for Travel Class: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        travelClassController.getById(id);
+        travelClassController.getById(id, session);
     }
 
-    private void createTravelClass() throws SQLException {
+    private void createTravelClass(Session session) throws SQLException {
         System.out.println("Enter new name: ");
         String name = INPUT.nextLine();
         INPUT.nextLine();
         TravelClass entity = new TravelClass(0, name);
-        travelClassController.create(entity);
+        travelClassController.create(entity, session);
     }
 
-    private void deleteTravelClassById() throws SQLException {
+    private void deleteTravelClassById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Travel Class: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        travelClassController.delete(id);
+        travelClassController.delete(id, session);
     }
 
-    private void updateTravelClassById() throws SQLException {
+    private void updateTravelClassById(Session session) throws SQLException {
         System.out.println("Enter Travel Class id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        TravelClass oldTravelClass = travelClassController.getService().getById(id);
+        TravelClass oldTravelClass = travelClassController.getService().getById(id,session);
         System.out.println("Enter new name for travel class: ");
         String name = INPUT.nextLine();
         INPUT.nextLine();
@@ -1008,7 +1009,7 @@ public class MainView {
         if (name.equals("")) newName = oldTravelClass.getName();
 
         TravelClass entity = new TravelClass(id, newName);
-        travelClassController.update(entity);
+        travelClassController.update(entity,session);
     }
 
     private void outputMenu() {

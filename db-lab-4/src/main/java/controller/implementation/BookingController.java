@@ -1,16 +1,16 @@
 package controller.implementation;
 
 import model.implementation.Booking;
+import service.IGeneralService;
 import service.implementation.BookingService;
 import service.implementation.GeneralService;
 
 public class BookingController extends GeneralController<Booking> {
 
-    private static final BookingService BOOKING_SERVICE = new BookingService();
+    private final GeneralService<Booking> bookingService = new BookingService();
 
     @Override
-    public final GeneralService<Booking> getService() {
-        return BOOKING_SERVICE;
+    public final IGeneralService<Booking> getService() {
+        return bookingService;
     }
-
 }

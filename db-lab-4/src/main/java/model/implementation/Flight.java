@@ -2,10 +2,19 @@ package model.implementation;
 
 import model.IGeneralModel;
 
+import javax.persistence.*;
+import java.util.Objects;
+
+@Entity
+@Table(name = "flight", schema = "oprysk_db")
 public class Flight implements IGeneralModel {
+    private static final String tableName = Flight.class.getSimpleName();
     private Integer id;
     private String departurePoint;
     private String destination;
+
+    public Flight(){
+    }
 
     public Flight(Integer id, String departurePoint, String destination) {
         this.id = id;
@@ -13,7 +22,12 @@ public class Flight implements IGeneralModel {
         this.destination = destination;
     }
 
-    @Override
+    public static String getTableName() {
+        return tableName;
+    }
+
+    @Id
+    @Column(name= "id")
     public Integer getId() {
         return id;
     }
@@ -22,6 +36,8 @@ public class Flight implements IGeneralModel {
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "departure_point")
     public String getDeparturePoint() {
         return departurePoint;
     }
@@ -30,12 +46,29 @@ public class Flight implements IGeneralModel {
         this.departurePoint = departurePoint;
     }
 
+    @Basic
+    @Column(name = "destination")
     public String getDestination() {
         return destination;
     }
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Flight flight = (Flight) o;
+        return Objects.equals(id, flight.id) &&
+                Objects.equals(departurePoint, flight.departurePoint) &&
+                Objects.equals(destination, flight.destination);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, departurePoint, destination);
     }
 
     @Override

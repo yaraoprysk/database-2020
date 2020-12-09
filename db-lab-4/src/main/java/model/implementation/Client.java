@@ -2,22 +2,40 @@ package model.implementation;
 
 import model.IGeneralModel;
 
-public class Client implements IGeneralModel {
-    private Integer id;
-    private Integer currentInfoAboutThePlaneId;
-    private Integer bookingId;
-    private Integer ticketId;
-    private Integer infoClientId;
+import javax.persistence.*;
+import java.util.Objects;
 
-    public Client(Integer id, Integer currentInfoAboutThePlaneId, Integer bookingId, Integer ticketId, Integer infoClientId) {
-        this.id = id;
-        this.currentInfoAboutThePlaneId = currentInfoAboutThePlaneId;
-        this.bookingId = bookingId;
-        this.ticketId = ticketId;
-        this.infoClientId = infoClientId;
+@Entity
+@Table(name = "client" , schema = "oprysk_db")
+public class Client implements IGeneralModel {
+    private static final String tableName = Client.class.getSimpleName();
+    private Integer id;
+    private CurrentInfoAboutThePlane currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId;
+    private Booking bookingByBookingId;
+    private Ticket ticketByTicketId;
+    private InfoClient infoClientByInfoClientId;
+
+    public Client(){
     }
 
-    @Override
+    public Client(Integer id,
+                  CurrentInfoAboutThePlane currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId,
+                  Booking bookingByBookingId,
+                  Ticket ticketByTicketId,
+                  InfoClient infoClientByInfoClientId) {
+        this.id = id;
+        this.currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId = currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId;
+        this.bookingByBookingId = bookingByBookingId;
+        this.ticketByTicketId = ticketByTicketId;
+        this.infoClientByInfoClientId = infoClientByInfoClientId;
+    }
+
+    public static String getTableName() {
+        return tableName;
+    }
+
+    @Id
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -26,46 +44,68 @@ public class Client implements IGeneralModel {
         this.id = id;
     }
 
-    public Integer getCurrentInfoAboutThePlaneId() {
-        return currentInfoAboutThePlaneId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(id, client.id);
     }
 
-    public void setCurrentInfoAboutThePlaneId(Integer currentInfoAboutThePlaneId) {
-        this.currentInfoAboutThePlaneId = currentInfoAboutThePlaneId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
-    public Integer getBookingId() {
-        return bookingId;
+
+    @ManyToOne
+    @JoinColumn(name = "current_info_about_the_plane_id", referencedColumnName = "id", nullable = false)
+    public CurrentInfoAboutThePlane getCurrentInfoAboutThePlaneByCurrentInfoAboutThePlaneId() {
+        return currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId;
     }
 
-    public void setBookingId(Integer bookingId) {
-        this.bookingId = bookingId;
+    public void setCurrentInfoAboutThePlaneByCurrentInfoAboutThePlaneId(CurrentInfoAboutThePlane currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId) {
+        this.currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId = currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId;
     }
 
-    public Integer getTicketId() {
-        return ticketId;
+    @ManyToOne
+    @JoinColumn(name = "booking_id", referencedColumnName = "id", nullable = false)
+    public Booking getBookingByBookingId() {
+        return bookingByBookingId;
     }
 
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
+    public void setBookingByBookingId(Booking bookingByBookingId) {
+        this.bookingByBookingId = bookingByBookingId;
     }
 
-    public Integer getInfoClientId() {
-        return infoClientId;
+    @ManyToOne
+    @JoinColumn(name = "ticket_id", referencedColumnName = "id", nullable = false)
+    public Ticket getTicketByTicketId() {
+        return ticketByTicketId;
     }
 
-    public void setInfoClientId(Integer infoClientId) {
-        this.infoClientId = infoClientId;
+    public void setTicketByTicketId(Ticket ticketByTicketId) {
+        this.ticketByTicketId = ticketByTicketId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "client_info_id", referencedColumnName = "id", nullable = false)
+    public InfoClient getInfoClientByInfoClientId() {
+        return infoClientByInfoClientId;
+    }
+
+    public void setInfoClientByInfoClientId(InfoClient infoClientByInfoClientId) {
+        this.infoClientByInfoClientId = infoClientByInfoClientId;
     }
 
     @Override
     public String toString() {
         return "Client{" +
                 "id=" + id +
-                ", currentInfoAboutThePlaneId=" + currentInfoAboutThePlaneId +
-                ", bookingId=" + bookingId +
-                ", ticketId=" + ticketId +
-                ", infoClientId=" + infoClientId +
+                ", currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId=" + currentInfoAboutThePlaneByCurrentInfoAboutThePlaneId +
+                ", bookingByBookingId=" + bookingByBookingId +
+                ", ticketByTicketId=" + ticketByTicketId +
+                ", infoClientByInfoClientId=" + infoClientByInfoClientId +
                 '}';
     }
 }

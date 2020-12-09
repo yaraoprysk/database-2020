@@ -2,13 +2,14 @@ package service.implementation;
 
 import DAO.IGeneralDAO;
 import DAO.implementation.FlightDAO;
+import DAO.implementation.GeneralDAO;
 import model.implementation.Flight;
 
 public class FlightService extends GeneralService<Flight> {
-    private final IGeneralDAO<Flight, Integer> flightDAOImplementation = new FlightDAO();
+    private final GeneralDAO<Flight> FLIGHT_DAO = new FlightDAO();
 
     @Override
-    public final IGeneralDAO<Flight, Integer> getDAO() {
-        return flightDAOImplementation;
+    public IGeneralDAO<Flight> getDAO() {
+        return FLIGHT_DAO;
     }
 }

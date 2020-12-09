@@ -1,16 +1,17 @@
 package controller.implementation;
 
 import model.implementation.PlaneInfo;
+import service.IGeneralService;
 import service.implementation.GeneralService;
 import service.implementation.PlaneInfoService;
 
 public class PlaneInfoController extends GeneralController<PlaneInfo> {
 
-    private static final PlaneInfoService PLANE_INFO_SERVICE = new PlaneInfoService();
+    private final GeneralService<PlaneInfo> planeInfoService = new PlaneInfoService();
 
     @Override
-    public final GeneralService<PlaneInfo> getService() {
-        return PLANE_INFO_SERVICE;
+    public final IGeneralService<PlaneInfo> getService() {
+        return planeInfoService;
     }
-
 }
+

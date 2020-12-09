@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost:3306/oprysk_db?serverTimezone=UTC</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">New_password_1</property>
+        <mapping class="model.implementation.Airline"/>
+        <mapping class="model.implementation.Airport"/>
+        <mapping class="model.implementation.Booking"/>
+        <mapping class="model.implementation.Client"/>
+        <mapping class="model.implementation.CurrentInfoAboutThePlane"/>
+        <mapping class="model.implementation.Flight"/>
+        <mapping class="model.implementation.InfoClient"/>
+        <mapping class="model.implementation.PaymentBooking"/>
+        <mapping class="model.implementation.PlaneInfo"/>
+        <mapping class="model.implementation.RegistrationInfo"/>
+        <mapping class="model.implementation.Route"/>
+        <mapping class="model.implementation.Schedule"/>
+        <mapping class="model.implementation.Ticket"/>
+        <mapping class="model.implementation.TravelClass"/>
+        <!-- <property name="connection.username"/> -->
+        <!-- <property name="connection.password"/> -->
+
+        <!-- DB schema will be updated if needed -->
+
+    </session-factory>
+</hibernate-configuration>
